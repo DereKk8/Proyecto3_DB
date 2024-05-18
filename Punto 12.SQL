@@ -1,0 +1,34 @@
+Elaborar un procedimiento almacenado que permita actualizar el valor total 
+de un pedido según el detalle de los pedidos, el código de pedido deberá 
+pasar por parámetro de entrada
+
+CREATE OR REPLACE PROCEDURE ACTUALIZAR_VALOR_TOTAL_PEDIDO (
+    p_CODIGOPEDIDO NUMBER
+)
+IS
+    v_VALORTOTAL NUMBER;
+BEGIN
+    SELECT NVL(SUM(dp.CANTIDAD * dp.PRECIOUNIDAD), 0)
+    INTO v_VALORTOTAL
+    FROM DETALLEPEDIDOS dp
+    WHERE dp.CODIGOPEDIDO = p_CODIGOPEDIDO;
+
+    UPDATE PEDIDOS
+    SET VALORTOTAL = v_VALORTOTAL
+    WHERE CODIGOPEDIDO = p_CODIGOPEDIDO;
+    COMMIT;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('El código de pedido no existe.');
+END ACTUALIZAR_VALOR_TOTAL_PEDIDO;
+
+UPDATE PEDIDOS 
+SET VALORTOTAL = 0
+WHERE CODIGOPEDIDO = 1;
+
+BEGIN
+    ACTUALIZAR_VALOR_TOTAL_PEDIDO(1); 
+END;
+
+SELECT * FROM PEDIDOS;
