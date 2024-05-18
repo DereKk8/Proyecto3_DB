@@ -11,6 +11,10 @@ SET VALORTOTAL = (
   WHERE dp.CODIGOPEDIDO = p.CODIGOPEDIDO
 );
 
+Elaborar unos disparadores que permitan realizar el proceso de auditoria a 
+las tablas, clientes y pedidos, para los procesos de inserción, actualización y 
+borrado
+
 CREATE OR REPLACE TRIGGER TRG_VALORTOTAL
 BEFORE INSERT OR UPDATE OR DELETE ON DETALLEPEDIDOS
 FOR EACH ROW
